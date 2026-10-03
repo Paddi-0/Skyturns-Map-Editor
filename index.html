@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skyturns Map Editor</title>
+  <link rel="icon" type="image/png" href="/assets/app-icon-49DSxShx.png" />
+  <script type="module" crossorigin src="/assets/index-BsZoJMzO.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Bs4txXKr.css">
+</head>
+<body>
+  <header id="topbar">
+    <div class="brand">
+      <img class="logo" src="/assets/app-logo-CD1ys_g7.png" alt="" />
+      <strong id="app-title"></strong>
+    </div>
+    <!-- Menus: a click opens one, a click anywhere else closes it. -->
+    <nav class="menubar">
+      <div class="menu">
+        <button class="menu-btn" data-menu="file"><span data-text="menuFile"></span><i class="caret"></i></button>
+        <div class="menu-pop" data-pop="file">
+          <button data-action="new"><span data-text="new"></span><kbd></kbd></button>
+          <button data-action="open"><span data-text="open"></span><kbd>Ctrl O</kbd></button>
+          <div class="menu-sep"></div>
+          <button data-action="save"><span data-text="save"></span><kbd>Ctrl S</kbd></button>
+          <button data-action="saveAs"><span data-text="saveAs"></span><kbd>Ctrl Shift S</kbd></button>
+          <div class="menu-sep"></div>
+          <button data-action="syncDraft"><span data-text="syncDraft"></span><kbd>Ctrl Shift U</kbd></button>
+          <button data-action="cloudDrafts"><span data-text="cloudDrafts"></span><kbd></kbd></button>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" data-menu="view"><span data-text="view"></span><i class="caret"></i></button>
+        <div class="menu-pop" data-pop="view">
+          <div class="menu-note" data-text="viewHint"></div>
+          <button data-view="perspective"><span data-text="perspective"></span><kbd>V 1</kbd></button>
+          <button data-view="top"><span data-text="top"></span><kbd>V 2</kbd></button>
+          <button data-view="sideX"><span data-text="sideX"></span><kbd>V 3</kbd></button>
+          <button data-view="sideY"><span data-text="sideY"></span><kbd>V 4</kbd></button>
+          <div class="menu-sep"></div>
+          <button data-action="frame"><span data-text="frame"></span><kbd>Home</kbd></button>
+        </div>
+      </div>
+      <div class="menu">
+        <button class="menu-btn" data-menu="map"><span data-text="stats"></span><i id="map-badge" class="badge"></i><i class="caret"></i></button>
+        <div class="menu-pop wide" data-pop="map">
+          <label class="field"><span data-text="name"></span><input id="map-name" type="text" maxlength="32" /></label>
+          <div id="stats"></div>
+          <h4 data-text="checks"></h4>
+          <ul id="checks"></ul>
+        </div>
+      </div>
+      <!-- The sky panel stays open until this button is clicked again. -->
+      <button class="menu-btn" data-action="sky"><span data-text="sky"></span></button>
+    </nav>
+    <div class="tb-group">
+      <button class="icon-btn" data-action="undo"><i class="glyph g-undo"></i></button>
+      <button class="icon-btn" data-action="redo"><i class="glyph g-undo flip"></i></button>
+    </div>
+    <span id="file-name"></span>
+    <div class="spacer"></div>
+    <label class="tb-select"><span data-text="grid"></span>
+      <select id="grid-step">
+        <option value="0" data-text="gridOff"></option>
+        <option value="0.5">0.5</option>
+        <option value="0.25">0.25</option>
+        <option value="0.1">0.1</option>
+      </select>
+    </label>
+    <div class="menu" id="account-menu">
+      <button class="menu-btn" data-menu="account"><i class="avatar"></i><span id="account-name"></span></button>
+      <div class="menu-pop right" data-pop="account">
+        <div class="menu-note" id="account-server"></div>
+        <button data-action="cloudDrafts"><span data-text="cloudDrafts"></span><kbd></kbd></button>
+        <div class="menu-sep"></div>
+        <button data-action="logout"><span data-text="logout"></span><kbd></kbd></button>
+      </div>
+    </div>
+    <button class="tb-btn ghost" data-action="tour"></button>
+    <button class="icon-btn key" data-action="shortcuts">?</button>
+    <button class="tb-btn ghost" data-action="language"></button>
+  </header>
+  <main>
+    <nav id="rail">
+      <button data-mode="move"><i class="glyph g-move"></i><kbd>Q</kbd></button>
+      <button data-mode="snap"><i class="glyph g-snap"></i><kbd>W</kbd></button>
+      <button data-mode="nav"><i class="glyph g-nav"></i></button>
+      <span class="rail-sep"></span>
+      <button data-mode="build"><i class="glyph g-build"></i><kbd>R</kbd></button>
+      <button data-mode="node"><i class="glyph g-node"></i><kbd>E</kbd></button>
+      <div id="mode-card" role="tooltip"></div>
+    </nav>
+    <div id="viewport">
+      <div id="mode-chip"></div>
+      <div id="drop-hint"></div>
+      <div id="view-toast"></div>
+      <!-- Sky: pinned open by its toolbar button. -->
+      <section id="sky-panel" class="float-card">
+        <header class="insp-head">
+          <span data-text="sky"></span>
+          <button class="icon-btn" data-action="sky" aria-label="close">✕</button>
+        </header>
+        <div class="insp-body"><div id="sky" class="insp-sec"></div></div>
+      </section>
+      <aside id="inspector">
+        <div class="insp-card insp-top">
+          <header class="insp-head">
+            <span data-text="selection"></span>
+            <button class="icon-btn" data-action="collapse"><span class="chev"></span></button>
+          </header>
+          <div class="insp-body">
+            <section class="insp-sec" id="selection"></section>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer id="hintbar">
+    <div id="hints"></div>
+    <div id="status"></div>
+  </footer>
+  <input id="file-input" type="file" accept=".json,application/json" hidden />
+</body>
+</html>
